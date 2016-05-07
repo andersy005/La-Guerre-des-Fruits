@@ -6,6 +6,9 @@ $(window).load(function() {
 var game = {
 	// start initializing objects, preloading assets and display Start screen
 	init: function(){
+		// Initialize objects
+		levels.init();
+		loader.init();
 
 		// Hide all game layers and display the start screen
 		$('.gamelayer').hide();
@@ -39,7 +42,17 @@ var levels = {
 			background:'clouds-background',
 			entities:[]
 
+		},
+
+		{
+			// Second level
+			foreground:'desert-foreground',
+			background:'clouds-background',
+			entities:[]
+
 		}
+
+
 	],
 
 
