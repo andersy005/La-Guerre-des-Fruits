@@ -1,3 +1,29 @@
+// setup requestAnimationFrame and cancelAnimationFrame for use in the game code
+(function() {
+	var lastTime = 0;
+	var vendors = ['ms', 'moz', 'webkit', 'o'];
+	for(var x = 0; vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+		window.cancelAnimationFrame =
+			window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x] + 'CancelAnimationFrame'];
+	}
+
+	if(!window.requestAnimationFrame)
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime();
+			var timeToCall = Math.max(0, 16 - (currTime - lastTime ));
+			var id = window.setTimeout(function() {callback(currTime + timeToCall); }, timeToCall);
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+
+		if(!window.cancelAnimationFrame)
+			window.cancelAnimationFrame = function(id) {
+				clearTimeout(id);
+			};
+
+}());
+
 $(window).load(function() {
 	game.init();
 });
@@ -14,7 +40,7 @@ var game = {
 		$('.gamelayer').hide();
 		$('#gamestartscreen').show();
 
-		// Get handler for game canvas and context 
+		// Get handler for game canvas and context
 		game.canvas = $('#gamecanvas')[0];
 		game.context = game.canvas.getContext('2d');
 	},
@@ -27,7 +53,7 @@ var game = {
 	},
 
 
-}
+};
 
 
 
@@ -62,7 +88,7 @@ var levels = {
 		for(var i = 0; i < levels.data.length; i++){
 			var level = levels.data[i];
 			html += '<input type = "button" value="'+(i + 1)+'">';
-		};
+		}
 
 		$('#levelselectscreen').html(html);
 
@@ -77,7 +103,7 @@ var levels = {
 	load:function(number){
 
 	}
-}
+};
 
 
 var loader = {
@@ -86,7 +112,7 @@ var loader = {
 	totalCount:0,    // Total number of assets that need to be loaded
 
 	init:function(){
-		// check for sound support 
+		// check for sound support
 		var mp3Support, oggSupport;
 		var audio = document.createElement('audio');
 		if(audio.canPlayType) {
@@ -135,7 +161,7 @@ var loader = {
 
 			loader.loaded = true;
 
-			// Hide the loading screen 
+			// Hide the loading screen
 			$('#loadingscreen').hide();
 			// and call the loader.onload method if it exists
 			if(loader.onload){
@@ -144,4 +170,4 @@ var loader = {
 			}
 		}
 	}
-}
+};
